@@ -1,17 +1,8 @@
 package org.mozilla.services.json;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import org.apache.commons.lang.StringUtils;
-
-import com.google.gson.Gson;
-//import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
 
 import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONObject;
@@ -23,7 +14,6 @@ public class FastPath {
     static JSONParser parser = new JSONParser();
 
     JSONAware coreObject;
-
 
     public FastPath(JSONAware aware) {
         this.coreObject = aware;
