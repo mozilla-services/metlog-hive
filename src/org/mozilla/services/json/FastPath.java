@@ -64,7 +64,7 @@ public class FastPath {
         { 
             String token = st.nextToken();
             if (isArray(token)) {
-                traverser = (JSONAware) getArrayElement((JSONArray)traverser, token);
+                traverser = getArrayElement((JSONObject)traverser, token);
             } else {
                 traverser = ((JSONObject)traverser).get(token);
             }
@@ -76,11 +76,12 @@ public class FastPath {
         return traverser;
     }
 
-    private static JSONAware getArrayElement(JSONArray traverser,
+    private static Object getArrayElement(JSONObject traverser,
             String token) {
         int index = Integer.valueOf(token.substring(token.indexOf("[") + 1,
                     token.indexOf("]")));
-        return (JSONAware) traverser.get(index);
+        String key = token.substring(0, token.indexOf("["));
+        return ((JSONArray) traverser.get(key)).get(index);
     }
 
     private static boolean isArray(String token) {
