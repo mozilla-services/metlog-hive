@@ -1,15 +1,18 @@
 <ivy-module version="2.0">
     <info organisation="org.mozilla" module="FastPath"/>
     <dependencies>
-        <dependency
-            org="javax.jdo"
-            name="jdo2-api"
-            rev="2.3-ec" />
-        <dependency org="com.googlecode.json-simple" name="json-simple" rev="1.1.1"/>
-        <dependency
-            org="org.apache.hadoop.hive"
-            name="hive-exec"
-            rev="0.7.1-cdh3u4" />
+        <dependency org="javax.jdo" name="jdo2-api" rev="2.3-ec" >
+            <exclude name='ant' />
+        </dependency>
+
+        <dependency org="com.googlecode.json-simple" name="json-simple" rev="1.1.1">
+            <exclude name='ant' />
+        </dependency>
+
+        <dependency org="org.apache.hadoop.hive" name="hive-exec" rev="0.7.1-cdh3u4" >
+            <exclude name='ant' />
+        </dependency>
+
     </dependencies>
 </ivy-module>
 
