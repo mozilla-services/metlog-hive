@@ -1,4 +1,4 @@
-<project name="FastPath" default="dist" basedir=".">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="FastPath" default="dist" basedir=".">
     <description>
         Build a JSON path traversal syntax
     </description>
@@ -24,6 +24,11 @@
       <!-- Create the build directory structure used by compile -->
       <mkdir dir="${build}"/>
   </target>
+
+  <target name="resolve" description="--> retrieve dependencies with ivy">
+      <ivy:retrieve />
+  </target>
+
 
   <target name="compile" depends="init" description="compile the source " >
       <!-- Compile the java code from ${src} into ${build} -->
