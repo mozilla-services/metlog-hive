@@ -90,4 +90,17 @@
       <delete dir="${dist}"/>
   </target>
 
+  <target name="javadoc" depends="resolve">
+      <javadoc packagenames="org.mozilla.services.json.*"
+          sourcepath="src"
+          defaultexcludes="yes"
+          destdir="docs/api"
+          author="true"
+          version="true"
+          use="true"
+          windowtitle="FastPath API">
+          <classpath refid="master-classpath"/>
+      </javadoc>
+  </target>
+
 </project>
