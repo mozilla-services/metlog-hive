@@ -27,23 +27,25 @@ public class FastPath {
         }
     }
 
-    /**
-     * <b>FastPath</b><br>
-     * JsonElement wrapper that adds path traverse. 
-     * <br>
-     * Ej:<br>
-     * FastPath response = new FastPath( <b>someJsonElement</b> );<br>
-     *	latitude = response.get("positions[0].geoLocation.latitude").getAsDouble();<br>
-     * @param path to iterate
+    /*
+     * Fetch a path from the JSON object
+     *
+     * @param path A path using dot notation to index into a JSON object.
+     *             Square brackets can be used to index into arrays.
+     * @return The stringified value at the keypath.  NULL if the
+     *         keypath walks is an invalid path
      */
-    public Object get(String path){
+    public String get(String path) {
         Object result;
         if (StringUtils.isBlank(path)) {
-            return this;
+            result = this;
         }
 
-        // TODO: specialize this and try to cast to the proper type
-        return iterateThrough(this, path);
+        result = iterateThrough(this, path);
+        if (result == null) {
+            return null;
+        }
+        return result.toString();
     }
 
     private static Object iterateThrough (FastPath element, String path) {
@@ -59,6 +61,8 @@ public class FastPath {
                 traverser = ((JSONObject)traverser).get(token);
             }
 
+            // Short circuit return a null if we fall off the JSON
+            // object
             if (traverser == null) {
                 return null;
             }
@@ -71,6 +75,12 @@ public class FastPath {
         int index = Integer.valueOf(token.substring(token.indexOf("[") + 1,
                     token.indexOf("]")));
         String key = token.substring(0, token.indexOf("["));
+
+        if ((index < 0) || (index >= ((JSONArray) traverser.get(key)).size()))
+        {
+            return null;
+        }
+
         return ((JSONArray) traverser.get(key)).get(index);
     }
 
