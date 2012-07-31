@@ -20,8 +20,31 @@ can be found on the relevant `spec page
 Installation
 ------------
 
-TODO: document loading the jar file via HDFS so that all Hadoop
-cluster nodes have access to the plugin.
+The best way to expose the JAR file is via HDFS as all your Hadoop nodes
+will then have access to the new plugin.  Otherwise, you're free to
+copy the MetlogHive jar file manually to all nodes to their local
+filesystem.
+
+Here's an example of dropping the JAR file into HDFS and making
+`exjson_tuple` function generally available ::
+
+    $ hadoop dfs -mkdir /hive_lib
+    $ hadoop dfs -put MetlogHive-20120730.jar /hive_lib/MetlogHive-20120730.jar
+    $ hadoop dfs -ls /hive_lib/
+    Found 1 items
+    -rw-r--r--   1 vagrant supergroup     816600 2012-07-31 04:30 /hive_lib/MetlogHive-20120730.jar
+    $ hive
+    Hive history file=/tmp/vagrant/hive_job_log_vagrant_201207310430_1529091028.txt
+    hive> add jar hdfs:///hive_lib/MetlogHive-20120730.jar;
+    converting to local hdfs:///hive_lib/MetlogHive-20120730.jar
+    Added /tmp/vagrant/hive_resources/MetlogHive-20120730.jar to class path
+    Added resource: /tmp/vagrant/hive_resources/MetlogHive-20120730.jar
+    hive> create temporary function exjson_tuple as 'org.mozilla.services.json.ExJSONTuple';
+    OK
+    Time taken: 1.839 seconds
+    hive> 
+
+
 
 Example Usage
 -------------
@@ -49,3 +72,34 @@ Sample output ::
 
 
 
+Building the plugin
+-------------------
+
+Requirements:  
+
+    * Java SDK.  (>= 1.6.0.33) 
+    * Apache Ant (>= 1.8.2)
+    * Apache Ivy (>= 2.3.0-rc1)
+    * JUnit      (>= 4.10)
+
+Assuming your Ivy and JUnit jar files are located in ~/.ant/lib, ant
+should be able to run all targets in the build.xml file.  Your
+~/.ant/lib should look something like this ::
+
+    ~ > ls -l ~/.ant/lib
+    total 2872
+    -rw-r--r--  1 victorng  staff   1.2M 16 Apr 00:02 ivy-2.3.0-rc1.jar
+    -rw-r--r--  1 victorng  staff   247K 30 Sep  2011 junit-4.10.jar
+    ~ > 
+
+Building a JAR file ::
+
+    $ ant build
+
+Running tests ::
+
+    $ ant test
+
+Generating the Javadoc ::
+
+    $ ant javadoc
