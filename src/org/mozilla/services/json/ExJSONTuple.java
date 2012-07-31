@@ -39,16 +39,16 @@ import org.json.simple.JSONObject;
 
 
 /**
- * GenericUDTFJSONTuple: this
+ * ExJSONTuple: this
  *
  */
 @Description(name = "exjson_tuple",
     value = "_FUNC_(jsonStr, p1, p2, ..., pn) - like get_json_object, but it takes multiple names and return a tuple. " +
-    		"All the input parameters and output column types are string.")
+            "All the input parameters and output column types are string.")
 
-public class GenericUDTFJSONTuple extends GenericUDTF {
+public class ExJSONTuple extends GenericUDTF {
 
-  private static Log LOG = LogFactory.getLog(GenericUDTFJSONTuple.class.getName());
+  private static Log LOG = LogFactory.getLog(ExJSONTuple.class.getName());
 
   int numCols;    // number of output columns
   String[] paths; // array of path expressions, each of which corresponds to a column
@@ -93,14 +93,14 @@ public class GenericUDTFJSONTuple extends GenericUDTF {
     numCols = args.length - 1;
 
     if (numCols < 1) {
-      throw new UDFArgumentException("json_tuple() takes at least two arguments: " +
-      		"the json string and a path expression");
+      throw new UDFArgumentException("exjson_tuple() takes at least two arguments: " +
+              "the json string and a path expression");
     }
 
     for (int i = 0; i < args.length; ++i) {
       if (args[i].getCategory() != ObjectInspector.Category.PRIMITIVE ||
           !args[i].getTypeName().equals(Constants.STRING_TYPE_NAME)) {
-        throw new UDFArgumentException("json_tuple()'s arguments have to be string type");
+        throw new UDFArgumentException("exjson_tuple()'s arguments have to be string type");
       }
     }
 
@@ -109,6 +109,7 @@ public class GenericUDTFJSONTuple extends GenericUDTF {
     paths = new String[numCols];
     cols = new Text[numCols];
     retCols = new Text[numCols];
+    LOG.warn("setting up a new retCols array of size: " + numCols);
     nullCols = new Object[numCols];
 
     for (int i = 0; i < numCols; ++i) {
@@ -157,16 +158,15 @@ public class GenericUDTFJSONTuple extends GenericUDTF {
       }
 
       for (int i = 0; i < numCols; ++i) {
-          // TODO: this can be optimized a bit so that we don't double
-          // fetch
-        if (fastpath.get(paths[i]) != null) {
-          retCols[i] = null;
-        } else {
-          if (retCols[i] == null) {
-            retCols[i] = cols[i]; // use the object pool rather than creating a new object
+          if (fastpath.get(paths[i]) == null) {
+              retCols[i] = null;
+          } else {
+              if (retCols[i] == null) {
+                  retCols[i] = cols[i]; // use the object pool rather than creating a new object
+              }
+              retCols[i].set(fastpath.get(paths[i]));
+              LOG.warn("adding string value ["+retCols[i]+"] @ index: " + i);
           }
-          retCols[i].set(fastpath.get(paths[i]));
-        }
       }
       forward(retCols);
       return;
@@ -178,6 +178,6 @@ public class GenericUDTFJSONTuple extends GenericUDTF {
 
   @Override
   public String toString() {
-    return "json_tuple";
+    return "exjson_tuple";
   }
 }

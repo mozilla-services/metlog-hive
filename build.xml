@@ -1,4 +1,4 @@
-<project xmlns:ivy="antlib:org.apache.ivy.ant" name="FastPath" default="dist" basedir=".">
+<project xmlns:ivy="antlib:org.apache.ivy.ant" name="MetlogHive" default="dist" basedir=".">
     <description>
         Build a JSON path traversal syntax
     </description>
@@ -51,8 +51,8 @@
       <!-- Create the distribution directory -->
       <mkdir dir="${dist}/lib"/>
 
-      <!-- Put everything in ${build} into the FastPath-${DSTAMP}.jar file -->
-      <jar jarfile="${dist}/lib/FastPath-${DSTAMP}.jar" basedir="${build}">
+      <!-- Put everything in ${build} into the MetlogHive-${DSTAMP}.jar file -->
+      <jar jarfile="${dist}/lib/MetlogHive-${DSTAMP}.jar" basedir="${build}">
           <zipfileset includes="**/*.class" src="lib/json-simple-1.1.1.jar"/>
       </jar>
   </target>
@@ -100,7 +100,7 @@
           author="true"
           version="true"
           use="true"
-          windowtitle="FastPath API">
+          windowtitle="MetlogHive API">
           <classpath refid="master-classpath"/>
       </javadoc>
   </target>
