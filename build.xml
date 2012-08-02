@@ -52,7 +52,7 @@
       <mkdir dir="${dist}/lib"/>
 
       <!-- Put everything in ${build} into the MetlogHive-${DSTAMP}.jar file -->
-      <jar jarfile="${dist}/lib/MetlogHive-${DSTAMP}.jar" basedir="${build}">
+      <jar jarfile="${dist}/lib/MetlogHive.jar" basedir="${build}">
           <zipfileset includes="**/*.class" src="lib/json-simple-1.1.1.jar"/>
       </jar>
   </target>
