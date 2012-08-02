@@ -1,7 +1,7 @@
 %define _metlog_dir /opt/metlog
 
 Name:          metlog-hive
-Version:       0.1.0
+Version:       0.2.0
 Release:       1
 Summary:       Apache Hive extensions to support Metlog
 Packager:      Victor Ng <vng@mozilla.com>
@@ -35,5 +35,8 @@ rm -rf %{buildroot}
 %{_metlog_dir}/hadoop/hive
 
 %changelog
+* ??? Tue Aug 2 2012 Victor Ng <vng@mozilla.com>
+- ??? Some comment here
+
 * Tue Aug 2 2012 Victor Ng <vng@mozilla.com>
 - Initial package
