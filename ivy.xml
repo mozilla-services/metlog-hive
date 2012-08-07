@@ -9,9 +9,18 @@
             <exclude name='ant' />
         </dependency>
 
+        <dependency org="com.jointhegrid" name="hive_test" rev="4.0.0-SNAPSHOT">
+            <exclude name='jms' />
+            <exclude name='ant' />
+            <exclude name='jmxtools' />
+            <exclude name='jmxri' />
+        </dependency>
+
+        <!--
         <dependency org="org.apache.hadoop.hive" name="hive-exec" rev="0.7.1-cdh3u4" >
             <exclude name='ant' />
         </dependency>
+        -->
 
     </dependencies>
 </ivy-module>
