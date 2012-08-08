@@ -1,59 +1,44 @@
+"""
+This Jython script is a template that can be used to test other UDTF
+functions
+"""
 import os
 import sys
-import StringIO
 
 for file in os.listdir('.'):
     sys.path.append(file)
 sys.path.append('../dist/lib/MetlogHive.jar')
 
-
-from java.util import ArrayList
-from org.apache.hadoop.io import Text
-from org.apache.hadoop.hive.serde2.objectinspector.primitive import *
-from org.apache.hadoop.hive.serde2.objectinspector import *
-from org.mozilla.services.json import *
+from org.apache.hadoop.hive.serde2.objectinspector.primitive import PrimitiveObjectInspectorFactory
+from org.mozilla.services.json import ExJSONTuple
 from org.apache.hadoop.hive.ql.udf.generic import UDTFCollector
-from org.apache.hadoop.hive.ql.exec import UDTFOperator
+from org.apache.hadoop.hive.ql.exec import UDTFOperator      # NOQA
 
-func = ExJSONTuple()
-op = UDTFOperator()
-collector = UDTFCollector(op)
-func.setCollector(collector)
 
-values = []
-values.append(PrimitiveObjectInspectorFactory.writableStringObjectInspector)
-values.append(PrimitiveObjectInspectorFactory.writableStringObjectInspector)
-values.append(PrimitiveObjectInspectorFactory.writableStringObjectInspector)
+def run_jsontuple(user_args):
 
-#op.initialize(func.conf, values)
+    func = ExJSONTuple()
+    func.setCollector(UDTFCollector(UDTFOperator()))
 
-func.initialize(values)
-args = []
+    args = []
+    for i in range(len(user_args)):
+        args.append(PrimitiveObjectInspectorFactory.writableStringObjectInspector)
 
-json_txt = PrimitiveObjectInspectorFactory.writableStringObjectInspector.create('{"foo": 42, "bar": 55}')
-foo_txt = PrimitiveObjectInspectorFactory.writableStringObjectInspector.create('foo')
-bar_txt = PrimitiveObjectInspectorFactory.writableStringObjectInspector.create('bar')
+    func.initialize(args)
 
-stderr = sys.stderr
-stdout = sys.stdout
+    str_inspector = PrimitiveObjectInspectorFactory.writableStringObjectInspector
 
-mock_stderr = StringIO.StringIO()
-mock_stdout = StringIO.StringIO()
+    func_args = [str_inspector.create(x) for x in user_args]
+    func.process(func_args)
+    return [str(x) for x in func.retCols]
 
-sys.stdout = mock_stdout
-sys.stderr = mock_stderr
+def test_exjson_tuple():
+    user_args = ['{"foo": 42, "bar": 55}', 'foo', 'bar'] 
+    result = run_jsontuple(user_args)
 
-try:
-    func.process([json_txt, foo_txt, bar_txt])
-except:
-    print '========== Std Err ========='
-    print mock_stderr.getvalue()
-    print '========== Std Out ========='
-    print mock_stdout.getvalue()
-    print '-----------'
-finally:
-    sys.stderr = stderr
-    sys.stdout = stdout
+    assert 2 == len(result)
+    assert '42' == result[0]
+    assert '55' == result[1]
 
-print 'Done!!!!!'
-
+if __name__ == '__main__':
+    test_exjson_tuple()
