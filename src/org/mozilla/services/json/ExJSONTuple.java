@@ -52,7 +52,7 @@ public class ExJSONTuple extends GenericUDTF {
 
   int numCols;    // number of output columns
   String[] paths; // array of path expressions, each of which corresponds to a column
-  Text[] retCols; // array of returned column values
+  public Text[] retCols; // array of returned column values
   Text[] cols;    // object pool of non-null Text, avoid creating objects all the time
   Object[] nullCols; // array of null column values
   ObjectInspector[] inputOIs; // input ObjectInspectors
