@@ -1,14 +1,25 @@
 <ivysettings>
     <settings defaultResolver="chain"/>
+
     <resolvers>
+        <!-- Enable the local .m2 directory to be used The primary Maven repository -->
+        <filesystem name="local-maven-2" m2compatible="true" force="false" local="true">
+            <artifact pattern="${user.home}/.m2/repository/[organisation]/[module]/[revision]/[module]-[revision].[ext]"/>
+            <ivy pattern="${user.home}/.m2/repository/[organisation]/[module]/[revision]/[module]-[revision].pom"/>
+        </filesystem>
+
         <chain name="chain">
+            <!-- The primary Maven repository -->
             <ibiblio name="central" m2compatible="true"/>
+
+            <!-- Cloudera Maven repositories -->
             <ibiblio name="cloudera" 
                 m2compatible="true" 
                 root="https://repository.cloudera.com/artifactory/cloudera-repos/"/> 
             <ibiblio name="datanucleus" 
                 m2compatible="true" 
                 root="http://www.datanucleus.org/downloads/maven2" />
+
         </chain>
     </resolvers>
 </ivysettings>
