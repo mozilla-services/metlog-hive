@@ -82,6 +82,11 @@
       </junit>
   </target>
 
+  <target name="clean-cache" description="clean up the ivy2 caches" >
+      <!-- Delete the ${build} and ${dist} directory trees -->
+      <delete dir="${user.home}/.ivy2"/>
+  </target>
+
   <target name="clean"
       description="clean up" >
       <!-- Delete the ${build} and ${dist} directory trees -->
