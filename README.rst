@@ -86,7 +86,7 @@ are :
     $ hadoop dfs -mkdir /metlog/lib
     $ hadoop dfs -put MetlogHive.jar /metlog/lib
 
-2. Create the Hive table if it doesn't already exist:
+2. Create the Hive table if it doesn't already exist ::
 
     $ hive 
     Hive history file=/tmp/vagrant/hive_job_log_vagrant_201208091816_1680191485.txt
